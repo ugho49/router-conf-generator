@@ -1,0 +1,5 @@
+target/
+configurations/
+.idea/
+*.iml
+*.class

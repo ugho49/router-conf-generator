@@ -1,0 +1,8 @@
+-------------------------------
+-- $typerouteur / $hostname --
+-------------------------------
+
+ip_adresse : $ip
+hostname : $hostname
+subnet : $subnet
+dns : $dns
