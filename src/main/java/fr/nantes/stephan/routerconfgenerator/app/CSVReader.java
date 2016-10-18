@@ -1,5 +1,9 @@
 package fr.nantes.stephan.routerconfgenerator.app;
 
+import fr.nantes.stephan.routerconfgenerator.util.Errors;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,50 +13,55 @@ import java.util.Arrays;
  */
 public class CSVReader {
 
-    private final String cvsSplitBy = ";";
+    private final Character cvsDivider = ';';
     private ArrayList<String> headers = new ArrayList<String>();
-    private ArrayList<ArrayList<String>> routers = new ArrayList<ArrayList<String>>();
+    private File csvFile;
 
-    public ArrayList<RouterModel> getRoutersFromCSV(final File f) {
-        read(f);
+    public CSVReader(File csvFile) {
+        this.csvFile = csvFile;
+    }
+
+    public ArrayList<RouterModel> getRoutersFromCSV() {
+        readHeaders();
         return createRouterModelArray();
     }
 
     private ArrayList<RouterModel> createRouterModelArray() {
-        final ArrayList<RouterModel> routers_list = new ArrayList<RouterModel>();
+        final ArrayList<RouterModel> routers = new ArrayList<RouterModel>();
 
-        // for each router
-        for (final ArrayList<String> router : routers) {
-            // create new model
-            final RouterModel model = new RouterModel();
-            // iterate each header
-            for (int i = 0; i < headers.size(); i++) {
-                model.addAttribute(headers.get(i), router.get(i));
+        try {
+            Reader in = new FileReader(csvFile);
+            Iterable<CSVRecord> records = CSVFormat.newFormat(cvsDivider).withFirstRecordAsHeader().parse(in);
+            for (final CSVRecord record : records) {
+                // create new model
+                final RouterModel model = new RouterModel();
+                // iterate each header
+                for (final String key : headers) {
+                    model.addAttribute(key, record.get(key));
+                    //System.out.println(record.get(key));
+                }
+                // add router to the list
+                routers.add(model);
             }
-            routers_list.add(model);
+        } catch (FileNotFoundException e) {
+            Errors.setFatalMessage(e);
+        } catch (IOException e) {
+            Errors.setFatalMessage(e);
         }
 
-        return routers_list;
+        return routers;
     }
 
-    private void read(final File f) {
+    private void readHeaders() {
 
         BufferedReader br = null;
         String line = "";
-        int count_lines = 0;
 
         try {
-            br = new BufferedReader(new FileReader(f));
+            br = new BufferedReader(new FileReader(this.csvFile));
 
-            while ((line = br.readLine()) != null) {
-
-                if (count_lines == 0) {
-                    headers = new ArrayList<String>(Arrays.asList(line.split(cvsSplitBy)));
-                } else {
-                    routers.add(new ArrayList<String>(Arrays.asList(line.split(cvsSplitBy))));
-                }
-
-                count_lines++;
+            if ((line = br.readLine()) != null) {
+                headers = new ArrayList<String>(Arrays.asList(line.split(cvsDivider.toString())));
             }
 
         } catch (FileNotFoundException e) {

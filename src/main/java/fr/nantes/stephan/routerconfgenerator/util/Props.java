@@ -1,5 +1,6 @@
 package fr.nantes.stephan.routerconfgenerator.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
@@ -36,9 +37,16 @@ public class Props {
 
         try {
             // Chargement du fichier de propriétées
-            properties.load(new FileInputStream("config.properties"));
+            final File f = new File("config.properties");
+            properties.load(new FileInputStream(f));
         } catch (FileNotFoundException e) {
-            Errors.setFatalMessage("Fichier de configuration introuvable (config.properties)");
+            StringBuilder str = new StringBuilder("Fichier de configuration introuvable (config.properties)");
+            str.append(System.getProperty("line.separator"));
+            str.append(System.getProperty("line.separator"));
+            str.append("Message de l'erreur :");
+            str.append(System.getProperty("line.separator"));
+            str.append(e.getMessage());
+            Errors.setFatalMessage(str.toString());
         } catch (Exception e) {
             Errors.setFatalMessage(e);
         }

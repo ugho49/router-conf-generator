@@ -52,8 +52,8 @@ public class Launcher {
         }
 
         // Read csv file and get all routers objects
-        final CSVReader csvReader = new CSVReader();
-        final ArrayList<RouterModel> routers = csvReader.getRoutersFromCSV(csvFile);
+        final CSVReader csvReader = new CSVReader(csvFile);
+        final ArrayList<RouterModel> routers = csvReader.getRoutersFromCSV();
         // Create all routers conf by template
         final ConfigurationCreator configurationCreator = new ConfigurationCreator();
         configurationCreator.createConfigurations(templateFile, routers);
