@@ -63,6 +63,7 @@
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                             <finalName>generator</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                         <phase>package</phase>
                         <goals>
