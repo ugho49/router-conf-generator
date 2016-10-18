@@ -21,8 +21,11 @@ public class ConfigurationCreator {
     private String suffix_out;
     //Folder name for sorts
     private String folder_name_sorts;
+    // template file
+    private File templateFile;
 
-    public ConfigurationCreator() {
+    public ConfigurationCreator(final File templateFile) {
+        this.templateFile = templateFile;
         // Déclaration du fichier de proprietées
         final Props prop = Props.getInstance();
         // Récupération des proprietés utiles
@@ -31,8 +34,8 @@ public class ConfigurationCreator {
         folder_name_sorts = prop.getProperty("folder_name");
     }
 
-    public void createConfigurations(final File template, final ArrayList<RouterModel> routers) {
-        final String template_content = readTemplateFile(template);
+    public void createConfigurations(final ArrayList<RouterModel> routers) {
+        final String template_content = readTemplateFile();
 
         deleteAllExisitingConfigurations();
 
@@ -87,10 +90,10 @@ public class ConfigurationCreator {
         return str;
     }
 
-    private String readTemplateFile(final File template) {
+    private String readTemplateFile() {
         final StringBuilder str = new StringBuilder();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(template));
+            BufferedReader br = new BufferedReader(new FileReader(this.templateFile));
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
                 str.append(sCurrentLine);

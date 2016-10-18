@@ -17,7 +17,7 @@ public class CSVReader {
     private ArrayList<String> headers = new ArrayList<String>();
     private File csvFile;
 
-    public CSVReader(File csvFile) {
+    public CSVReader(final File csvFile) {
         this.csvFile = csvFile;
     }
 

@@ -40,7 +40,7 @@ public class Props {
             final File f = new File("config.properties");
             properties.load(new FileInputStream(f));
         } catch (FileNotFoundException e) {
-            StringBuilder str = new StringBuilder("Fichier de configuration introuvable (config.properties)");
+            final StringBuilder str = new StringBuilder("Fichier de configuration introuvable (config.properties)");
             str.append(System.getProperty("line.separator"));
             str.append(System.getProperty("line.separator"));
             str.append("Message de l'erreur :");

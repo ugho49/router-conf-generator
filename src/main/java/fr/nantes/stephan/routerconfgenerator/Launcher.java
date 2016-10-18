@@ -53,12 +53,11 @@ public class Launcher {
 
         // Read csv file and get all routers objects
         final CSVReader csvReader = new CSVReader(csvFile);
-        final ArrayList<RouterModel> routers = csvReader.getRoutersFromCSV();
         // Create all routers conf by template
-        final ConfigurationCreator configurationCreator = new ConfigurationCreator();
-        configurationCreator.createConfigurations(templateFile, routers);
+        final ConfigurationCreator configurationCreator = new ConfigurationCreator(templateFile);
+        configurationCreator.createConfigurations(csvReader.getRoutersFromCSV());
         // Resume stats :
-        StringBuilder str = new StringBuilder();
+        final StringBuilder str = new StringBuilder();
         str.append("Le script à fini la création des fichiers de configurations :");
         str.append(System.getProperty("line.separator"));
         str.append(System.getProperty("line.separator"));
